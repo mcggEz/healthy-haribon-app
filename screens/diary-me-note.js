@@ -31,6 +31,10 @@ const DiaryMeNote = ({ route, navigation }) => {
 
   return (
     <View style={styles.container}>
+      <View style={styles.buttonContainer}>
+        <Button title="Save" onPress={handleSave} />
+        <Button title="Delete" onPress={handleDelete} color="#F44336" />
+      </View>
       <Text style={styles.noteTitle}>Note</Text>
       <TextInput
         style={styles.noteInput}
@@ -39,10 +43,6 @@ const DiaryMeNote = ({ route, navigation }) => {
         value={noteText}
         onChangeText={setNoteText}
       />
-      <View style={styles.buttonContainer}>
-        <Button title="Save" onPress={handleSave} color="#4CAF50" />
-        <Button title="Delete" onPress={handleDelete} color="#F44336" />
-      </View>
     </View>
   );
 };
@@ -72,8 +72,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#f9f9f9", // Light grey background for the input
   },
   buttonContainer: {
+    marginTop: 20,
     flexDirection: "row",
-    justifyContent: "space-around", // Evenly space buttons
+    // Stretch the button container horizontally
+    justifyContent: "space-between",
   },
 });
 

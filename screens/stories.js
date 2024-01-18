@@ -5,16 +5,13 @@ import {
   FlatList,
   StyleSheet,
   Image,
-  Dimensions,
   TouchableOpacity,
 } from "react-native";
 import { db } from "../App";
 import { collection, getDocs, query, where } from "firebase/firestore/lite";
 import { useNavigation } from "@react-navigation/native";
-import { Menu } from "lucide-react-native";
 import BurgerMenu from "../components/menu-bar";
-
-const windowWidth = Dimensions.get("window").width; // Get the window width
+import { ChevronLeft } from "lucide-react-native";
 
 const numColumns = 2; // Define the number of columns you want
 
@@ -56,8 +53,21 @@ const Stories = () => {
 
   return (
     <View style={styles.container}>
-      {/* Burger Menu Top Left Corner */}
-      <BurgerMenu />
+      <TouchableOpacity
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          marginBottom: 16,
+          marginTop: 20,
+          position: "absolute",
+          left: 20,
+          top: 40,
+        }}
+        onPress={() => navigation.goBack()}
+      >
+        <ChevronLeft size={16} color="black" style={{ marginRight: 5 }} />
+        <Text style={styles.backButtonText}>Back</Text>
+      </TouchableOpacity>
       <Text
         style={{
           fontSize: 22,

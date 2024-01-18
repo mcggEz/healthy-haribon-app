@@ -74,6 +74,26 @@ const DiaryMeList = () => {
 
   return (
     <View style={styles.container}>
+      <View
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "center",
+          alignItems: "center",
+          marginTop: 20,
+          gap: 10,
+          marginBottom: 20,
+        }}
+      >
+        <Button title="Add Note" onPress={handleAddNote} />
+        {/* Back */}
+        <Button
+          title="Back"
+          onPress={() => {
+            navigation.navigate("Dashboard");
+          }}
+        />
+      </View>
       {
         // If there are no notes, show a message instead
         !notes.length && (
@@ -89,25 +109,6 @@ const DiaryMeList = () => {
           </TouchableOpacity>
         )}
       />
-      <View
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "center",
-          alignItems: "center",
-          marginTop: 20,
-          gap: 10,
-        }}
-      >
-        <Button title="Add Note" onPress={handleAddNote} />
-        {/* Back */}
-        <Button
-          title="Back"
-          onPress={() => {
-            navigation.navigate("Dashboard");
-          }}
-        />
-      </View>
     </View>
   );
 };

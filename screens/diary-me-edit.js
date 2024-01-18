@@ -48,6 +48,7 @@ const DiaryMeEdit = ({ route, navigation }) => {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={styles.container}
     >
+      <Button title="Save Note" onPress={handleSave} />
       <TextInput
         style={styles.noteInput}
         multiline
@@ -55,7 +56,6 @@ const DiaryMeEdit = ({ route, navigation }) => {
         value={noteText}
         onChangeText={setNoteText}
       />
-      <Button title="Save Note" onPress={handleSave} />
     </KeyboardAvoidingView>
   );
 };
@@ -65,6 +65,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20, // Add padding around the screen
     backgroundColor: "#fff", // Set a background color
+    paddingTop: 50, // Add padding to avoid the notch
   },
   noteInput: {
     flex: 1, // Take up all available space
@@ -74,6 +75,7 @@ const styles = StyleSheet.create({
     borderRadius: 5, // Round the corners slightly
     fontSize: 16, // Increase the font size
     textAlignVertical: "top", // Start the text at the top of the TextInput
+    marginTop: 20, // Add margin between the button and TextInput
   },
 });
 
