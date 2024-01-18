@@ -74,6 +74,12 @@ const DiaryMeList = () => {
 
   return (
     <View style={styles.container}>
+      {
+        // If there are no notes, show a message instead
+        !notes.length && (
+          <Text style={{ textAlign: "center" }}>No notes yet.</Text>
+        )
+      }
       <FlatList
         data={notes}
         keyExtractor={(item) => item.id.toString()}
@@ -83,7 +89,25 @@ const DiaryMeList = () => {
           </TouchableOpacity>
         )}
       />
-      <Button title="Add Note" onPress={handleAddNote} />
+      <View
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "center",
+          alignItems: "center",
+          marginTop: 20,
+          gap: 10,
+        }}
+      >
+        <Button title="Add Note" onPress={handleAddNote} />
+        {/* Back */}
+        <Button
+          title="Back"
+          onPress={() => {
+            navigation.navigate("Dashboard");
+          }}
+        />
+      </View>
     </View>
   );
 };
@@ -92,6 +116,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20, // Add padding around the screen
+    paddingTop: 50, // Add padding to avoid the notch
     backgroundColor: "#fff", // Set a background color
   },
   noteItem: {

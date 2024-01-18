@@ -10,8 +10,25 @@ import Menu from "./screens/menu";
 import DiaryMeList from "./screens/diary-me-list";
 import DiaryMeNote from "./screens/diary-me-note";
 import DiaryMeEdit from "./screens/diary-me-edit";
+import Stories from "./screens/stories";
+
+import { initializeApp } from "firebase/app";
+import { getFirestore, collection, getDocs } from "firebase/firestore/lite";
 
 const Stack = createNativeStackNavigator();
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDJYj9nk8UpFRqWyKX3wa0upxEdZfh5Ehg",
+  authDomain: "healthy-haribon-mobile-app.firebaseapp.com",
+  databaseURL: "https://healthy-haribon-mobile-app.firebaseio.com",
+  projectId: "healthy-haribon-mobile-app",
+  storageBucket: "healthy-haribon-mobile-app.appspot.com",
+  // messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+  appId: "1:1085852481451:android:38e34acd8a385b0f2504e",
+};
+
+const app = initializeApp(firebaseConfig);
+export const db = getFirestore(app);
 
 // Define an array of your screens
 const screens = [
@@ -33,12 +50,16 @@ const screens = [
     name: "DiaryMeEdit",
     component: DiaryMeEdit,
   },
+  {
+    name: "Stories",
+    component: Stories,
+  },
 ];
 
 function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Dashboard">
+      <Stack.Navigator initialRouteName="Stories">
         {screens.map((screen) => (
           <Stack.Screen
             key={screen.name} // Ensure each screen has a unique key

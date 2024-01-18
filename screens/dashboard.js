@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Menu, Notebook, Book, MessageCircleIcon } from "lucide-react-native";
+import BurgerMenu from "../components/menu-bar";
 
 export default function Dashboard() {
   const navigation = useNavigation();
@@ -73,20 +74,7 @@ export default function Dashboard() {
   return (
     <ScrollView style={styles.container}>
       {/* Burger Menu Top Left Corner */}
-      <TouchableOpacity
-        style={styles.menuIcon}
-        onPress={() => {
-          navigation.navigate("Menu");
-        }}
-      >
-        {/* <Text>Menu</Text> */}
-        <Menu
-          color="black"
-          style={{
-            margin: 15,
-          }}
-        />
-      </TouchableOpacity>
+      <BurgerMenu />
 
       {/* User greeting and search bar */}
       <Text style={styles.greeting}>How are you?</Text>
@@ -123,12 +111,13 @@ export default function Dashboard() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 50, // Padding to avoid the notch
+    paddingTop: 20, // Padding to avoid the notch
     backgroundColor: "#FFF",
   },
   greeting: {
     fontSize: 24,
     fontWeight: "bold",
+    marginTop: 100,
     marginVertical: 20,
     textAlign: "center",
   },

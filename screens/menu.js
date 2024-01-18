@@ -76,7 +76,7 @@ export default function Menu() {
           gap: 5,
         }}
         onPress={() => {
-          navigation.navigate("Dashboard");
+          navigation.goBack();
         }}
       >
         <Text style={{ color: "#fff", fontSize: 18 }}>Back</Text>
