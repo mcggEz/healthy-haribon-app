@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -12,8 +12,30 @@ import { useNavigation } from "@react-navigation/native";
 import { Menu, Notebook, Book, MessageCircleIcon } from "lucide-react-native";
 import BurgerMenu from "../components/menu-bar";
 
+import { getFirestore, doc, getDoc } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+
 export default function Dashboard() {
   const navigation = useNavigation();
+
+  const auth = getAuth();
+  const db = getFirestore();
+  const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (auth.currentUser) {
+        const userDocRef = doc(db, "users", auth.currentUser.uid);
+        const userDocSnapshot = await getDoc(userDocRef);
+
+        if (userDocSnapshot.exists()) {
+          setUserData(userDocSnapshot.data());
+        }
+      }
+    };
+
+    fetchUserData();
+  }, [auth.currentUser, db]);
 
   const features = [
     {
@@ -36,7 +58,7 @@ export default function Dashboard() {
       },
     },
     {
-      title: "HariTalk",
+      title: "Haritalk",
       description: "Consult with experts for personalized health advice.",
       iconName: "people",
       icon: (
@@ -47,7 +69,7 @@ export default function Dashboard() {
         />
       ),
       onPressed: () => {
-        navigation.navigate("HariTalk");
+        navigation.navigate("Haritalk");
       },
     },
   ];
@@ -77,7 +99,14 @@ export default function Dashboard() {
       <BurgerMenu />
 
       {/* User greeting and search bar */}
-      <Text style={styles.greeting}>How are you?</Text>
+      <Text style={styles.greeting}>
+        How are you,{" "}
+        {
+          // If userData is not null, show the user's name
+          userData && userData?.fullName?.split(" ")[0]
+        }
+        ?
+      </Text>
 
       {/* Description */}
       <Text

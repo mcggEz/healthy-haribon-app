@@ -6,13 +6,50 @@ import {
   TextInput,
   TouchableOpacity,
   Switch,
+  Alert,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getFirestore, doc, setDoc } from "firebase/firestore";
 
 export default function Signup() {
   const navigation = useNavigation();
-
   const [isTermsAgreed, setIsTermsAgreed] = useState(false);
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const auth = getAuth();
+  const firestore = getFirestore();
+
+  const handleSignup = () => {
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        // Store additional user data in Firestore
+        const userRef = doc(firestore, "users", user.uid);
+        setDoc(userRef, {
+          fullName: fullName,
+          email: email,
+        })
+          .then(() => {
+            Alert.alert(
+              "Account Created",
+              "Your account has been created successfully!"
+            );
+            navigation.navigate("Signin");
+          })
+          .catch((error) => {
+            console.error("Error writing document: ", error);
+          });
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        Alert.alert("Error", errorMessage);
+      });
+  };
 
   return (
     <View style={styles.container}>
@@ -25,13 +62,20 @@ export default function Signup() {
         style={styles.input}
         placeholder="Full Name"
         keyboardType="default"
+        onChangeText={setFullName}
       />
       <TextInput
         style={styles.input}
-        placeholder="Email or Phone Number"
+        placeholder="Email"
         keyboardType="email-address"
+        onChangeText={setEmail}
       />
-      <TextInput style={styles.input} placeholder="Password" secureTextEntry />
+      <TextInput
+        style={styles.input}
+        placeholder="Password"
+        secureTextEntry
+        onChangeText={setPassword}
+      />
 
       <View style={styles.checkboxContainer}>
         <Switch
@@ -50,6 +94,7 @@ export default function Signup() {
           { backgroundColor: isTermsAgreed ? "#3498db" : "gray" },
         ]}
         disabled={!isTermsAgreed}
+        onPress={handleSignup}
       >
         <Text style={styles.buttonText}>Create Account</Text>
       </TouchableOpacity>

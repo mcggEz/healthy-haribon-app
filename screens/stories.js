@@ -102,21 +102,35 @@ const Stories = () => {
         data={books}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <View style={styles.bookItem}>
-            <Image
-              source={{ uri: item.bookImage }}
-              style={styles.bookImage}
-              resizeMode="cover"
-            />
-            <View style={styles.textContainer}>
-              <Text style={styles.title}>{item.bookTitle}</Text>
-              <Text style={styles.author}>{item.bookAuthor}</Text>
-              <Text style={styles.publishedDate}>{item.bookPublishedDate}</Text>
-              <Text
-                style={styles.pages}
-              >{`Pages: ${item.bookTotalPages}`}</Text>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("BookContent", {
+                bookTitle: item.bookTitle,
+                bookAuthor: item.bookAuthor,
+                bookPublishedDate: item.bookPublishedDate,
+                bookTotalPages: item.bookTotalPages,
+                bookContent: item.bookContent,
+              })
+            }
+          >
+            <View style={styles.bookItem}>
+              <Image
+                source={{ uri: item.bookImage }}
+                style={styles.bookImage}
+                resizeMode="cover"
+              />
+              <View style={styles.textContainer}>
+                <Text style={styles.title}>{item.bookTitle}</Text>
+                <Text style={styles.author}>{item.bookAuthor}</Text>
+                <Text style={styles.publishedDate}>
+                  {item.bookPublishedDate}
+                </Text>
+                <Text
+                  style={styles.pages}
+                >{`Pages: ${item.bookTotalPages}`}</Text>
+              </View>
             </View>
-          </View>
+          </TouchableOpacity>
         )}
         numColumns={numColumns}
         contentContainerStyle={styles.booksList}

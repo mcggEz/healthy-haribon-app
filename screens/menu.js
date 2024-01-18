@@ -1,52 +1,85 @@
 import React from "react";
-import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
+import { Text, View, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { User, Settings, LogOut, ChevronRight } from "lucide-react-native";
-
-const menuItems = [
-  {
-    title: "Profile",
-    screen: "Profile",
-    icon: (
-      <User
-        size={24}
-        color="white"
-        style={{
-          marginRight: 15,
-        }}
-      />
-    ),
-  },
-  {
-    title: "Settings",
-    screen: "Settings",
-    icon: (
-      <Settings
-        size={24}
-        color="white"
-        style={{
-          marginRight: 15,
-        }}
-      />
-    ),
-  },
-  {
-    title: "Logout",
-    screen: "Signin",
-    icon: (
-      <LogOut
-        size={24}
-        color="white"
-        style={{
-          marginRight: 15,
-        }}
-      />
-    ),
-  },
-];
+import {
+  User,
+  Settings,
+  LogOut,
+  ChevronRight,
+  LayoutDashboard,
+} from "lucide-react-native";
+import { getAuth, signOut } from "firebase/auth";
 
 export default function Menu() {
   const navigation = useNavigation();
+  const auth = getAuth();
+
+  const handleSignOut = () => {
+    signOut(auth)
+      .then(() => {
+        // Sign-out successful.
+        navigation.navigate("Signin");
+      })
+      .catch((error) => {
+        // An error happened.
+        Alert.alert("Error", error.message);
+      });
+  };
+
+  const menuItems = [
+    {
+      title: "Dashboard",
+      screen: "Dashboard",
+      icon: (
+        <LayoutDashboard
+          size={24}
+          color="white"
+          style={{
+            marginRight: 15,
+          }}
+        />
+      ),
+    },
+    {
+      title: "Profile",
+      screen: "Profile",
+      icon: (
+        <User
+          size={24}
+          color="white"
+          style={{
+            marginRight: 15,
+          }}
+        />
+      ),
+    },
+    {
+      title: "Settings",
+      screen: "Settings",
+      icon: (
+        <Settings
+          size={24}
+          color="white"
+          style={{
+            marginRight: 15,
+          }}
+        />
+      ),
+    },
+    {
+      title: "Logout",
+      action: handleSignOut, // Changed from 'screen' to 'action'
+      icon: (
+        <LogOut
+          size={24}
+          color="white"
+          style={{
+            marginRight: 15,
+          }}
+        />
+      ),
+    },
+  ];
   return (
     <View style={styles.menuContainer}>
       {menuItems.map((item, index) => (
@@ -54,7 +87,7 @@ export default function Menu() {
           <TouchableOpacity
             style={styles.menuItem}
             onPress={() => {
-              navigation.navigate(item.screen);
+              item.action ? item.action() : navigation.navigate(item.screen);
             }}
           >
             {item.icon}

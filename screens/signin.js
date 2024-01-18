@@ -5,15 +5,37 @@ import {
   View,
   TextInput,
   TouchableOpacity,
-  Image,
+  Alert,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 export default function Signin() {
   const navigation = useNavigation();
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const auth = getAuth();
+
+  const handleSignIn = () => {
+    // Basic validation
+    if (!email || !password) {
+      Alert.alert("Error", "Please enter both email and password.");
+      return;
+    }
+
+    signInWithEmailAndPassword(auth, email, password)
+      .then(() => {
+        // Navigate to Dashboard or home screen after successful login
+        navigation.navigate("Dashboard");
+      })
+      .catch((error) => {
+        // Handle errors here
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        Alert.alert("Sign In Failed", errorMessage);
+      });
+  };
 
   return (
     <View style={styles.container}>
@@ -48,21 +70,8 @@ export default function Signin() {
         <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => {
-          navigation.navigate("Dashboard");
-        }}
-      >
+      <TouchableOpacity style={styles.button} onPress={handleSignIn}>
         <Text style={styles.buttonText}>Log in</Text>
-      </TouchableOpacity>
-
-      <Text style={styles.orText}>or</Text>
-
-      <TouchableOpacity style={[styles.button, styles.googleButton]}>
-        <Text style={[styles.buttonText, { marginLeft: 10 }]}>
-          Sign-in with Google
-        </Text>
       </TouchableOpacity>
 
       <View style={styles.signUpTextContainer}>

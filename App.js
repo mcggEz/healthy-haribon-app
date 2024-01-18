@@ -11,6 +11,10 @@ import DiaryMeList from "./screens/diary-me-list";
 import DiaryMeNote from "./screens/diary-me-note";
 import DiaryMeEdit from "./screens/diary-me-edit";
 import Stories from "./screens/stories";
+import Settings from "./screens/settings";
+import BookContent from "./screens/stories-book-content";
+import Profile from "./screens/profile";
+import Haritalk from "./screens/haritalk";
 
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, getDocs } from "firebase/firestore/lite";
@@ -54,12 +58,28 @@ const screens = [
     name: "Stories",
     component: Stories,
   },
+  {
+    name: "Settings",
+    component: Settings,
+  },
+  {
+    name: "BookContent",
+    component: BookContent,
+  },
+  {
+    name: "Profile",
+    component: Profile,
+  },
+  {
+    name: "Haritalk",
+    component: Haritalk,
+  },
 ];
 
 function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Stories">
+      <Stack.Navigator initialRouteName="Onboarding">
         {screens.map((screen) => (
           <Stack.Screen
             key={screen.name} // Ensure each screen has a unique key

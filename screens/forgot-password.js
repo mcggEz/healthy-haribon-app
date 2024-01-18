@@ -5,19 +5,40 @@ import {
   View,
   TextInput,
   TouchableOpacity,
-  Image,
+  Alert,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 
 export default function ForgotPassword() {
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
 
+  const handlePasswordReset = () => {
+    const auth = getAuth();
+    sendPasswordResetEmail(auth, email)
+      .then(() => {
+        Alert.alert(
+          "Email Sent",
+          "A password reset email has been sent to your email address.",
+          [
+            {
+              text: "OK",
+              onPress: () => navigation.navigate("Signin"),
+            },
+          ]
+        );
+      })
+      .catch((error) => {
+        const errorMessage = error.message;
+        Alert.alert("Error", errorMessage);
+      });
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Forgot Password</Text>
       <Text style={styles.subtitle}>Continue your Healthy journey</Text>
-
       <TextInput
         style={styles.input}
         placeholder="Enter your email..."
@@ -26,7 +47,7 @@ export default function ForgotPassword() {
         onChangeText={setEmail}
       />
 
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={handlePasswordReset}>
         <Text style={styles.buttonText}>Send Email</Text>
       </TouchableOpacity>
 
